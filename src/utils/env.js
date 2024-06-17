@@ -1,13 +1,13 @@
-import dotenv from 'dotenv';
+import { ContactsCollection } from '../db/models/contact.js';
 
-dotenv.config();
-
-export const  env = (name, defaultValue)=>{
-    const value = process.env[name];
-
-    if (value) return value;
-
-    if (defaultValue) return defaultValue;
-
-    throw new Error(`Missing: process.env['${name}'].`);
-};
+export const getAllContacts = async () => {
+    const contacts = await ContactsCollection.find();
+  
+    return contacts;
+  };
+  
+  export const getContactById = async (contactId) => {
+    const contact = await ContactsCollection.findById(contactId);
+  
+    return contact;
+  };
