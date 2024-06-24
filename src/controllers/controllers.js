@@ -6,6 +6,7 @@ export const getAllContactsController = async (req, res, next) => {
         const contacts = await getAllContacts();
         res.status(200).json({
           status: 200,
+          message: 'Successfully found contacts!',
             data: contacts,
             });
     } catch (error) {
@@ -46,7 +47,7 @@ export const deleteContactController = async (req, res, next) => {
     next(createHttpError(404, 'Contact not found'));
     return;
   }
-  res.status(204).send();
+  res.status(204).json({ message: 'Delete success' }).send();
 };
 export const upsetContactController = async (req, res, next) => {
   const { contactId } = req.params;
@@ -68,13 +69,15 @@ export const upsetContactController = async (req, res, next) => {
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const contact = await updateContact(contactId, req.body);
+
   if (!contact) {
-    next(createHttpError(404, "Contact not found"));
+    next(createHttpError(404, 'Contact not found'));
     return;
-  };
+  }
+
   res.json({
     status: 200,
-    message: "Successfully",
+    message: `Successfully patched a contact!`,
     data: contact.contact,
   });
 };
