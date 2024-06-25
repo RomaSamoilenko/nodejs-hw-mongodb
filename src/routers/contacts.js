@@ -1,29 +1,19 @@
-import { Router } from "express";
+import { Router } from 'express';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import {
-  getAllContactsController,
+  getContactsController,
   getContactByIdController,
-  createNewContactController,
+  createContactController,
   deleteContactController,
-  upsetContactController,
-  patchContactController,
-} from "../controllers/controllers.js"; 
-import { ctrlWrapper } from "../utils/ctrlWrapper.js";
+  patchedContactController,
+} from '../controllers/controllers.js';
 
-const contactRouter = Router();
+const router = Router();
 
-contactRouter.get('/contacts', ctrlWrapper (getAllContactsController));
-contactRouter.get('/contacts/:contactId', ctrlWrapper (getContactByIdController));
-contactRouter.post('/contacts', ctrlWrapper(createNewContactController));  
-contactRouter.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
-contactRouter.put('/contacts/:contactId', ctrlWrapper(upsetContactController));
-contactRouter.patch('/contacts/contactId', ctrlWrapper(patchContactController));
-contactRouter.use('*', (req, res, next) => {
-    res.status(404).json({
-      status: 404,
-      message: 'Not found',
-    });
-    next();
-  });
+router.get('/contacts', ctrlWrapper(getContactsController));
+router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
+router.post('/contacts', ctrlWrapper(createContactController));
+router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
+router.patch('/contacts/:contactId', ctrlWrapper(patchedContactController));
 
-
-export default contactRouter;
+export default router;
