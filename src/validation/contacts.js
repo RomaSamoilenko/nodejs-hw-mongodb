@@ -1,17 +1,17 @@
 import Joi from 'joi';
 
 export const createContactSchema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    phoneNumber: Joi.number().min(9).max(14).required(),
-    email: Joi.string().email(),
-    isFavourite: Joi.boolean(),
-    contactType: Joi.string().valid('work', 'home', 'personal').required(),
+  name: Joi.string().min(3).max(20).required(),
+  phoneNumber: Joi.string().required(),
+  email: Joi.string().email(),
+  isFavourite: Joi.boolean(),
+  contactType: Joi.string().valid('work', 'home', 'personal'),
 });
 
 export const updateContactSchema = Joi.object({
-    name: Joi.string().min(3).max(30),
-    phoneNumber: Joi.number().min(9).max(14),
-    email: Joi.string().email(),
-    isFavourite: Joi.boolean(),
-    contactType: Joi.string().valid('work', 'home', 'personal'),
+  name: Joi.string().min(3).max(20),
+  phoneNumber: Joi.string(),
+  email: Joi.string().email(),
+  isFavourite: Joi.boolean(),
+  contactType: Joi.string().valid('work', 'home', 'personal'),
 }); 
