@@ -9,6 +9,7 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import mongoose from 'mongoose';
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -31,21 +32,30 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await getContactById(contactId);
 
-  
-
-  if (!contact) {
-      next(createHttpError(404, "Contact not found"));
-      return;
+  if (!mongoose.Types.ObjectId.isValid(contactId)) {
+    next(createHttpError(400, 'Invalid contact ID'));
+    return;
   }
 
-  res.status(200).json({
+  try {
+    const contact = await getContactById(contactId);
+
+    if (!contact) {
+      next(createHttpError(404, 'Contact not found'));
+      return;
+    }
+
+    res.status(200).json({
       status: 200,
       message: `Successfully found contact with id ${contactId}!`,
       data: contact,
-  });
+    });
+  } catch (error) {
+    next(error);
+  }
 };
+
 export const createContactController = async (req, res) => {
   const contact = await createContact(req.body);
 
